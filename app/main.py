@@ -4,6 +4,9 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from routers import books
 from database import Base, engine
+import os
+# from prometheus_fastapi_instrumentator import Instrumentator
+#Pozniejszy etap
 
 Base.metadata.create_all(bind=engine)
 
@@ -19,7 +22,10 @@ app.include_router(books.router)
 
 @app.on_event("startup")
 async def startup_event():
-    from app.init_db import init_db
+    try:
+        from init_db import init_db
+    except ImportError:
+        from app.init_db import init_db
     init_db()
 
 
@@ -30,4 +36,4 @@ def home(request: Request):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=6666, reload=True)
