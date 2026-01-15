@@ -1,0 +1,20 @@
+groups:
+  - name: fastapi_alerts
+    rules:
+      - alert: HighRequestRate
+        expr: rate(http_requests_total[1m]) > 5
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Wysoki ruch wykryty (Instance {{ $labels.instance }})"
+          description: "RPS jest powyżej 5 przez ostatnią minutę."
+
+      - alert: ServerErrors
+        expr: increase(http_requests_total{status=~"5.."}[1m]) > 0
+        for: 0m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Błąd serwera wykryty (Instance {{ $labels.instance }})"
+          description: "Wykryto kod odpowiedzi 5xx."

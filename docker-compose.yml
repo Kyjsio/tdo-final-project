@@ -3,16 +3,17 @@ services:
     build: .
     restart: on-failure
     ports:
-      - "6666:6666"
+      - "8000:8000"
     environment:
       - DATABASE_URL=postgresql://myuser:12345@db:5432/finaldb
     depends_on:
-      migrate:
-        condition: service_completed_successfully
-    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "6666"]
+      - db
     networks:
       - app-network
-   
+    command: >
+      sh -c "python -m alembic upgrade head &&
+             python -m uvicorn app.main:app --host 0.0.0.0 --port 8000"
+
   db:
     image: postgres:15-alpine
     restart: always
@@ -31,14 +32,39 @@ services:
       retries: 10
   
       
-  migrate:
-    build: .
+#  migrate:
+#    build: .
+#    environment:
+#      - DATABASE_URL=postgresql://myuser:12345@db:5432/finaldb
+#    depends_on:
+#      db:
+#        condition: service_healthy
+#    command: ["alembic", "upgrade", "head"]
+#    networks:
+#      - app-network
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./alert_rules.yml:/etc/prometheus/alert_rules.yml
+    ports:
+      - "9090:9090"
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    networks:
+      - app-network
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
     environment:
-      - DATABASE_URL=postgresql://myuser:12345@db:5432/finaldb
+      - GF_SECURITY_ADMIN_PASSWORD=admin
     depends_on:
-      db:
-        condition: service_healthy
-    command: ["alembic", "upgrade", "head"]
+      - prometheus
     networks:
       - app-network
 

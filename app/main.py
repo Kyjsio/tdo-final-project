@@ -5,7 +5,7 @@ from fastapi.staticfiles import StaticFiles
 from app.routers import books
 from app.database import Base, engine
 import os
-# from prometheus_fastapi_instrumentator import Instrumentator
+from prometheus_fastapi_instrumentator import Instrumentator
 #Pozniejszy etap
 
 Base.metadata.create_all(bind=engine)
@@ -33,7 +33,7 @@ async def startup_event():
 def home(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
-
+Instrumentator().instrument(app).expose(app)
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("main:app", host="0.0.0.0", port=6666, reload=True)
