@@ -8,8 +8,6 @@ services:
       - DATABASE_URL=postgresql://myuser:12345@db:5432/finaldb
     depends_on:
       - db
-#      migrate:
-    ##        condition: service_completed_successfully
     networks:
       - app-network
     command: >
