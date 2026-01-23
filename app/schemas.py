@@ -11,6 +11,11 @@ class BookBase(BaseModel):
 class BookCreate(BookBase):
     pass
 
+class BookUpdate(BaseModel):
+    title: str | None = None
+    author: str | None = None
+    description: str | None = None
+    year: str | None = None
 
 class Book(BookBase):
     id: int
