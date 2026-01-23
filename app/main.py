@@ -2,7 +2,7 @@ from fastapi import FastAPI, Request
 from pathlib import Path
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
-from app.routers import books
+from app.routers import books, auth
 from app.database import Base, engine
 import os
 from prometheus_fastapi_instrumentator import Instrumentator
@@ -18,7 +18,7 @@ static_dir = os.path.join(BASE_DIR, "static")
 app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
 app.include_router(books.router)
-
+app.include_router(auth.router)
 
 @app.on_event("startup")
 async def startup_event():
