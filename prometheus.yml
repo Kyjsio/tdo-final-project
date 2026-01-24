@@ -4,8 +4,20 @@ global:
 rule_files:
   - "alert_rules.yml"
 
+#localhost
+
+#scrape_configs:
+#  - job_name: 'fastapi_app'
+#    metrics_path: '/metrics'
+#    static_configs:
+#      - targets: ['api:8000']
+
+
+#render
+
 scrape_configs:
-  - job_name: 'fastapi_app'
+  - job_name: 'fastapi-render'
     metrics_path: '/metrics'
+    scheme: https
     static_configs:
-      - targets: ['api:8000']
+      - targets: ['tdo-final-project.onrender.com']
