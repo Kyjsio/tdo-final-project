@@ -31,17 +31,6 @@ services:
       timeout: 5s
       retries: 10
   
-      
-#  migrate:
-#    build: .
-#    environment:
-#      - DATABASE_URL=postgresql://myuser:12345@db:5432/finaldb
-#    depends_on:
-#      db:
-#        condition: service_healthy
-#    command: ["alembic", "upgrade", "head"]
-#    networks:
-#      - app-network
 
   prometheus:
     image: prom/prometheus
