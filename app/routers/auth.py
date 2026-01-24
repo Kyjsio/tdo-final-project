@@ -3,7 +3,6 @@ from datetime import timedelta
 from fastapi import Depends, HTTPException, status, APIRouter
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
-from uvicorn.config import HTTPProtocolType
 
 from app import models
 from app.database import SessionLocal
