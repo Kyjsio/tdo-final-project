@@ -19,4 +19,4 @@ ENV PYTHONPATH="${PYTHONPATH}:/app/app"
 
 EXPOSE 6666
 
-CMD ["python", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "6666"]
+CMD ["python", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

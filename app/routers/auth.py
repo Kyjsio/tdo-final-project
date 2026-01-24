@@ -29,7 +29,7 @@ def register_user(
         password: str,
         db:Session = Depends(get_db),
 ):
-    user = db.query(models.User).filter(models.User.username == username).fisrt()
+    user = db.query(models.User).filter(models.User.username == username).first()
     if user:
         raise HTTPException(status_code=400, detail="User already excist")
 
