@@ -26,8 +26,8 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push (commit sha tag)
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          push: true
-          tags: ghcr.io/${{ github.repository }}:${{ github.sha }}
+        env:
+          IMAGE: ghcr.io/${{ github.repository }}
+        run: |
+          IMAGE_LOWER=$(echo "$IMAGE" | tr '[:upper:]' '[:lower:]')
+          docker buildx build --push -t "$IMAGE_LOWER:${{ github.sha }}" .
