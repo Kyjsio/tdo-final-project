@@ -16,13 +16,10 @@ def test_register_user(client):
     assert response.status_code == 201, f"Rejestracja nieudana: {response.text}"
 
 def test_login_user(client):
-    # Rejestracja (params)
     client.post(
         "/auth/register",
         params={"username": "login_user", "email": "login@example.com", "password": "password123"}
     )
-
-    # Logowanie (form data - standard OAuth2)
     response = client.post(
         "/auth/token",
         data={"username": "login_user", "password": "password123"}
