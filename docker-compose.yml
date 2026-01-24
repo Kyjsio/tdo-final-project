@@ -56,9 +56,11 @@ services:
       - prometheus
     networks:
       - app-network
-
+    volumes:
+      - grafana_data:/var/lib/grafana
 volumes:
   postgres_data:
+  grafana_data:
 
 networks:
   app-network:
